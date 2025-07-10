@@ -1,0 +1,33 @@
+import re
+from google.colab import files
+
+# 📁 Upload a text file
+print("📁 Please upload a .txt file to search:")
+uploaded = files.upload()
+
+# Get the uploaded filename
+filename = list(uploaded.keys())[0]
+print(f"\n✅ File '{filename}' uploaded successfully.")
+
+# 🧠 Get user input
+pattern = input("Enter the case-sensitive pattern to search: ")
+
+match_count = 0
+
+try:
+    with open(filename, 'r', encoding='utf-8', errors='ignore') as file:
+        lines = file.readlines()
+
+        print("\n🔍 Case-sensitive search results:")
+        
+        for lineno, line in enumerate(lines, start=1):
+            if re.search(pattern, line, re.IGNORECASE):
+
+                print(f"{lineno}: {line.strip()}")
+                match_count += 1
+
+    print(f"\n✅ Total lines processed: {len(lines)}")
+    print(f"📌 Total matching lines: {match_count}")
+
+except FileNotFoundError:
+    print("❌ File not found. Please try uploading again.")
